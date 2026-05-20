@@ -8,6 +8,7 @@ __pycache__/
 # Local config (never commit)
 .env
 *.local
+.claude/
 
 # macOS
 .DS_Store
