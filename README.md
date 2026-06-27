@@ -259,10 +259,7 @@ Free transcript via youtube-transcript-api. Optional metadata + top comments via
 | `/obsidian-reconcile` | Finds contradictions and resolves them. The vault maintains its own truth. |
 | `/obsidian-export` | Clean JSON/markdown snapshot any AI tool can read |
 | `/obsidian-daily` | Creates or updates today's daily note |
-| `/obsidian-agenda` | Reads Google Calendar and writes an AI-first snapshot (conflicts, focus blocks, attendee links) |
-| `/obsidian-schedule` | Creates or moves a Google Calendar event from a task or standalone, links it back to the task |
-| `/obsidian-meeting` | Generates a meeting note from a calendar event (attendees, time, link pre-filled) |
-| `/obsidian-calendar` | Reconciles the vault against your calendar - flags commitments not yet scheduled (flag only) |
+| `/obsidian-calendar <mode>` | One calendar command, four modes: `agenda` (read a snapshot), `reconcile` (flag commitments not yet scheduled), `meeting` (event to note), `schedule` (create/move an event from a task or standalone) |
 | `/obsidian-recurring` | Tracks a recurring obligation with a cadence and a computed next-due date |
 | `/obsidian-log` | Logs a work session, links it everywhere |
 | `/obsidian-task` | Adds task to the right board with priority and due date |
@@ -694,7 +691,7 @@ Yes. The skill is model-agnostic - the OpenCode, Codex, and Gemini builds are pl
 Yes. The skill writes to your vault as standard markdown files. Obsidian Sync, iCloud, Syncthing, and Git-based sync all work without modification.
 
 ### Do I need API keys to use this?
-Mostly no. The vault commands (`/obsidian-save`, `/obsidian-daily`, etc.) need no API keys. `/research` and `/research-deep` are also key-free now - with no Perplexity key they automatically fall back to free, key-less sources (Wikipedia, HackerNews, arXiv, Reddit, and more) and Claude synthesizes the dossier. The remaining research commands (`/x-read`, `/x-pulse`, `/notebooklm`, `/youtube`, `/podcast`) need their respective keys (xAI Grok, Perplexity, Google Gemini, optionally YouTube Data API v3 / OpenAI Whisper) and exit with a clear setup message when one is missing. The calendar commands (`/obsidian-agenda`, `/obsidian-schedule`, `/obsidian-meeting`) need the Google Calendar MCP connector rather than an API key.
+Mostly no. The vault commands (`/obsidian-save`, `/obsidian-daily`, etc.) need no API keys. `/research` and `/research-deep` are also key-free now - with no Perplexity key they automatically fall back to free, key-less sources (Wikipedia, HackerNews, arXiv, Reddit, and more) and Claude synthesizes the dossier. The remaining research commands (`/x-read`, `/x-pulse`, `/notebooklm`, `/youtube`, `/podcast`) need their respective keys (xAI Grok, Perplexity, Google Gemini, optionally YouTube Data API v3 / OpenAI Whisper) and exit with a clear setup message when one is missing. The calendar command (`/obsidian-calendar`, all four modes) needs the Google Calendar MCP connector rather than an API key.
 
 ### How is this different from Notion AI or Mem?
 Notion AI and Mem are closed-source SaaS products that own your data. This skill stores everything as plain markdown in your local Obsidian vault, with no vendor lock-in. The AI is on top of your data, not behind it. You can switch tools or stop using the skill at any point and still have your full vault.

@@ -106,7 +106,7 @@ See `references/vault-schema.md` for full structural details.
 ## Core Operating Principles
 
 ### AI-first vault rule (applies to every note)
-The vault is designed for **future-Claude** to read and reason over, not for human review. Every note Claude writes - across all 48 commands - must follow `references/ai-first-rules.md`:
+The vault is designed for **future-Claude** to read and reason over, not for human review. Every note Claude writes - across all 45 commands - must follow `references/ai-first-rules.md`:
 
 1. **Self-contained context** - each note explains itself; don't rely on backlinks alone
 2. **"For future Claude" preamble** - 2-3 sentence summary so Claude can decide relevance in 10 seconds
@@ -380,27 +380,16 @@ Return the path of the daily note when done.
 
 ---
 
-### `/obsidian-agenda`
+### `/obsidian-calendar <mode>`
 
-**Reads Google Calendar and writes a re-derivable AI-first snapshot to the vault.** Claude Code only (needs the Google Calendar MCP).
+**One calendar command with four modes.** Claude Code only (needs the Google Calendar MCP). The first word selects the mode; a bare range word defaults to `agenda`; no argument at all defaults to `agenda today`.
 
-Range argument: `today` (default), `tomorrow`, `week`, `next-week`, `YYYY-MM-DD`, or `YYYY-MM-DD..YYYY-MM-DD`. Pulls the primary calendar, cross-links attendees to `[[Person]]` notes, and flags conflicts, 3+ back-to-back stretches, working-hours focus blocks, and externally-organized events. Saves to `wiki/agenda/` as `type: agenda-snapshot` (Google Calendar stays the source of truth; the note is a snapshot). Never paraphrases event titles or invents attendees.
+- **`agenda [range]`** - reads the calendar and writes a re-derivable AI-first snapshot to `wiki/agenda/` (`type: agenda-snapshot`). Range: `today`, `tomorrow`, `week`, `next-week`, a date, or a range. Cross-links attendees to `[[Person]]` notes; flags conflicts, 3+ back-to-back stretches, working-hours focus blocks, and externally-organized events. Read-only on the calendar; Google Calendar stays the source of truth.
+- **`reconcile [window]`** - flags commitments the vault implies (project `next_action`s, due tasks, dated commitments in daily notes, fixed dates in `CRITICAL_FACTS.md`) that are NOT on the calendar, plus events with no vault context. Flag only - never adds or changes events.
+- **`meeting [selector]`** - turns an event (`last`, `next`, `today`, `event-id:<id>`, or fuzzy title) into a `type: meeting` note in `wiki/meetings/` with metadata pre-filled and **empty** Notes / Decisions / Action items sections (never fabricate meeting content). Cross-links attendees, backlinks any task whose `calendar-event-id` matches.
+- **`schedule <args>`** - the only mode that writes to the calendar. Standalone (`"<title>" <when> <duration>`), from a task (`task:<path>`), or suggest-a-time (`task:<...> suggest:<window>`). Resolves attendee emails from person notes (never guesses), conflict-checks before writing, requests a Meet link when participants span domains, and writes `calendar-event-id` back into the task so a re-run reschedules rather than duplicating.
 
----
-
-### `/obsidian-schedule`
-
-**Creates or moves a Google Calendar event, then links it back to the vault.** Claude Code only.
-
-Three modes: standalone (`"<title>" <when> <duration>`), from a vault task (`task:<path>`), or suggest-a-time (`task:<...> suggest:<window>`). Resolves attendee emails from each person note's `email:` field and never guesses one; conflict-checks before writing; requests a Meet link when participants span domains. On success it writes `calendar-event-id` / `calendar-event-url` back into the task frontmatter, so a re-run reschedules rather than duplicating.
-
----
-
-### `/obsidian-meeting`
-
-**Generates a meeting note from a Google Calendar event.** Claude Code only.
-
-Resolve the event (`last`, `next`, `today`, `event-id:<id>`, or fuzzy title), cross-link attendees to person notes, and backlink any task whose frontmatter `calendar-event-id` matches. Saves to `wiki/meetings/` as `type: meeting` with the event metadata pre-filled and **empty** Notes / Decisions / Action items sections - never fabricate meeting content that did not happen.
+(Consolidated from the former `/obsidian-agenda`, `/obsidian-reconcile`-style calendar check, `/obsidian-meeting`, and `/obsidian-schedule` - same behaviors, one entry point. The natural-language triggers for all four still route here.)
 
 ---
 
