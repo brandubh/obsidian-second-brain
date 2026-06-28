@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.11.1] - 2026-06-28
+
+### Added
+
+- **Pi Coding Agent as a 6th build target (#83, by @Gepetdo).** `bash scripts/build.sh --platform pi` emits `dist/pi/`, a native [Pi](https://pi.dev) package: a `package.json` declaring `pi.prompts`/`pi.skills`, one prompt template per command under `.pi/prompts/` (invoke `/obsidian-save` etc.), and a discovery skill at `.pi/skills/obsidian-second-brain/SKILL.md` (`/skill:obsidian-second-brain`) with the AI-first rules + Python helpers alongside. Tool-name and path references are neutralized for the Pi layout (no `~/.claude/...` leakage). Purely additive - the adapter is auto-discovered by `build.sh`, so the existing five platforms are untouched; guarded by its own smoke test. Pi has no background-agent equivalent, so `/obsidian-nightly` is run manually or via cron.
+
 ## [0.11.0] - 2026-06-28 - The Retriever
 
 ### Added
