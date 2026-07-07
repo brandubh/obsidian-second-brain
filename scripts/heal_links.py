@@ -8,14 +8,16 @@ resolve, so vault_health counts them as "wanted notes". This script repoints eac
 link to the real note when exactly one note is an unambiguous match, preserving the
 original text as a display alias: [[kebab-basename|Host iptables rules ...]].
 
-Matching is deterministic and safe:
+Only certain matches are ever auto-applied:
   1. exact stem/alias match,
-  2. slug match - lowercase both sides and collapse every run of non-alphanumeric
-     characters to a single space, so "Title Case", "kebab-case", punctuation and
-     stray slashes all compare equal (this is what resolves the Title<->kebab case),
-  3. a last-resort fuzzy match (difflib) only when exactly one close name exists.
-Ambiguous links (two or more matches) and links with no match are counted and left
-alone - those judgment calls belong to the AI triage loop (triage_links.py).
+  2. slug match - fold diacritics, lowercase both sides, and collapse every run of
+     non-alphanumeric characters to a single space, so "Title Case", "kebab-case",
+     "Ivan"/"Ivan", punctuation and stray slashes all compare equal (this is what
+     resolves the Title<->kebab case).
+A fuzzy match (difflib) is only a GUESS - at any workable cutoff it will confuse
+"Google Ads" with "Google Docs" and "ADR-2026-05-17" with "ADR-2026-05-11". So fuzzy
+hits, ambiguous slugs (2+ candidates), and no-match links are never auto-fixed: they
+are counted and handed to the AI triage loop (triage_links.py), which decides.
 
 The score is vault_health.check_wanted_notes, so this count == the health check's count.
 
@@ -28,6 +30,7 @@ Incremental loop, bounded to N fixes, recounting each pass so you can watch:
 """
 import argparse
 import re
+import unicodedata
 from collections import Counter, defaultdict
 from difflib import get_close_matches
 from pathlib import Path
@@ -42,12 +45,15 @@ PLACEHOLDER = set("*{}<>")                    # template/glob junk, never auto-f
 
 
 def slugify(text: str) -> str:
-    """Lowercase and collapse every non-alphanumeric run to one space.
+    """Fold diacritics, lowercase, and collapse every non-alphanumeric run to one space.
 
     "Host iptables rules", "host-iptables-rules" and "Flat /24 LAN" all normalize to a
     space-joined token stream, so a Title-cased wikilink matches its kebab-cased file.
+    Diacritics are folded first (NFKD + ASCII), so "Ivan Rusakoff" == "Ivan Rusakoff"
+    resolves as a certain slug match instead of falling to the fuzzy guesser.
     """
-    return NON_ALNUM.sub(" ", text.lower()).strip()
+    folded = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
+    return NON_ALNUM.sub(" ", folded.lower()).strip()
 
 
 def base_target(link: str) -> str:
@@ -90,10 +96,11 @@ def classify(link, name_to_rel, stems, slug_to_rels):
         if len(rels) == 1:
             return "easy_fix", next(iter(rels))
         return "ask_claude", sorted(rels)
+    # A fuzzy hit is a GUESS, never a certainty: at cutoff 0.84 difflib matches
+    # "Google Ads" -> "Google Docs" and "ADR-2026-05-17" -> "ADR-2026-05-11". Never
+    # auto-apply it; hand any close names to triage so a human/AI makes the call.
     near = get_close_matches(low, stems, n=2, cutoff=0.84)
-    if len(near) == 1:
-        return "easy_fix", name_to_rel[near[0]]
-    if len(near) > 1:
+    if near:
         return "ask_claude", [name_to_rel[n] for n in near]
     return "no_target", None
 
