@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# =============================================================================
+# adapters/copilot/adapter.sh - GitHub Copilot platform adapter
+# =============================================================================
+# Copilot is a first-class peer of Claude and Codex. Design:
+#   - AGENTS.md (emitted by the codex-cli/opencode adapters) is the single
+#     populated operating manual. Recent VS Code Copilot reads AGENTS.md at
+#     the workspace root natively (agent mode).
+#   - .github/copilot-instructions.md is emitted as a THIN POINTER (not a
+#     symlink) so older clients and copilot-instructions-only surfaces
+#     (github.com chat, Copilot coding agent) are covered too.
+# This adapter therefore emits only the pointer + an install hint. Deploy it
+# on top of a build that provides AGENTS.md (codex-cli or opencode).
+# =============================================================================
+
+COPILOT_PLATFORM="copilot"
+
+adapter_build() {
+  local src="$1" dst="$2"
+
+  _copilot_emit_pointer "$dst"
+  _copilot_emit_install_hint "$dst"
+}
+
+_copilot_emit_pointer() {
+  local dst="$1"
+  mkdir -p "$dst/.github"
+  cat > "$dst/.github/copilot-instructions.md" <<'EOF'
+# GitHub Copilot
+
+The single source of truth for this project is **AGENTS.md** at the repository root.
+
+Read `AGENTS.md` and follow all instructions there, including the memory protocol: read the `memory/` directory at the start of work and keep it updated as the project progresses.
+
+This file is a pointer only. It intentionally contains no rules of its own; `AGENTS.md` governs. If a rule needs to change, change it in `AGENTS.md`.
+EOF
+}
+
+_copilot_emit_install_hint() {
+  local dst="$1"
+  cat > "$dst/INSTALL.md" <<'EOF'
+# Install for GitHub Copilot
+
+```bash
+# After building the AGENTS.md-based package (codex-cli or opencode) into your
+# vault, add the Copilot pointer:
+cp -R dist/copilot/.github /path/to/your/vault/
+```
+
+Requires `AGENTS.md` at the vault root (from the codex-cli or opencode build).
+
+- Recent VS Code Copilot (agent mode) reads `AGENTS.md` natively — the pointer
+  is then redundant but harmless.
+- Older clients, github.com Copilot chat, and the Copilot coding agent read
+  `.github/copilot-instructions.md` — the pointer routes them to `AGENTS.md`.
+- Copilot has no native command discovery: the routing tables inside
+  `AGENTS.md` are the router.
+EOF
+}

@@ -38,6 +38,7 @@ Available platforms:
   opencode      - OpenCode (AGENTS.md + .opencode/commands/)
   hermes        - Nous Research Hermes Agent (native skills, skills/<category>/)
   pi            - Pi Coding Agent (package.json + .pi/prompts/ + .pi/skills/)
+  copilot       - GitHub Copilot (.github/copilot-instructions.md pointer to AGENTS.md)
 EOF
       exit 0
       ;;

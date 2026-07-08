@@ -29,7 +29,46 @@ adapter_build() {
   _codex_emit_skills "$src/commands" "$dst/$CODEX_SKILLS_DIR"
   _codex_copy_references "$src/references" "$dst/.${CODEX_DIR}/references"
   _codex_copy_scripts "$src/scripts" "$dst/.${CODEX_DIR}/scripts"
+  _codex_emit_pointer_files "$dst"
   _codex_emit_install_hint "$dst"
+}
+
+# AGENTS.md is the single populated operating manual. Every other agent
+# instruction file is a THIN POINTER (plain text, never a symlink) so the same
+# vault runs Claude, Gemini, and Copilot simultaneously from one manual.
+_codex_emit_pointer_files() {
+  local dst="$1"
+
+  cat > "$dst/CLAUDE.md" <<'EOF'
+@AGENTS.md
+
+# Claude Code
+
+All project instructions live in **AGENTS.md** at the repository root, imported above and treated as the single source of truth. Read it and follow every rule there, including the memory protocol.
+
+Do not duplicate or restate instructions in this file. If a rule needs to change, change it in `AGENTS.md`.
+EOF
+
+  cat > "$dst/GEMINI.md" <<'EOF'
+# Gemini CLI
+
+The single source of truth for this project is **AGENTS.md** at the repository root.
+
+Read `AGENTS.md` and follow all instructions there, including the memory protocol: read the `memory/` directory at the start of work and keep it updated as the project progresses.
+
+This file is a pointer only. It intentionally contains no rules of its own — `AGENTS.md` governs. If a rule needs to change, change it in `AGENTS.md`.
+EOF
+
+  mkdir -p "$dst/.github"
+  cat > "$dst/.github/copilot-instructions.md" <<'EOF'
+# GitHub Copilot
+
+The single source of truth for this project is **AGENTS.md** at the repository root.
+
+Read `AGENTS.md` and follow all instructions there, including the memory protocol: read the `memory/` directory at the start of work and keep it updated as the project progresses.
+
+This file is a pointer only. It intentionally contains no rules of its own; `AGENTS.md` governs. If a rule needs to change, change it in `AGENTS.md`.
+EOF
 }
 
 # Emit AGENTS.md at the dist root. Thin always-on manual - no routing table,
