@@ -129,22 +129,13 @@ EOF
 _codex_emit_skills() {
   local src="$1" dst="$2"
   [[ -d "$src" ]] || return 0
-  local f name desc triggers out
+  local f name desc out
   for f in "$src"/*.md; do
     [[ -f "$f" ]] || continue
     should_include "$f" "$CODEX_PLATFORM" || continue
 
     name="$(basename "$f" .md)"
-    desc="$(parse_frontmatter "$f" description)"
-    triggers="$(parse_frontmatter "$f" triggers_en)"
-    [[ -z "$desc" ]] && desc="Run the $name command of the obsidian-second-brain skill."
-
-    # Fold triggers into the description for implicit selection.
-    if [[ -n "$triggers" ]]; then
-      local trig_clean
-      trig_clean="$(echo "$triggers" | tr -d '[]"' | sed 's/,/, /g; s/  */ /g; s/^ *//; s/ *$//')"
-      [[ -n "$trig_clean" ]] && desc="$desc Triggers: $trig_clean."
-    fi
+    desc="$(compose_skill_description "$f")"
 
     mkdir -p "$dst/$name"
     out="$dst/$name/SKILL.md"

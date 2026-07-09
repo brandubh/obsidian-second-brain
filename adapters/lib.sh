@@ -67,6 +67,27 @@ enumerate_commands() {
   done
 }
 
+# compose_skill_description <file>
+# Echoes the command's `description` frontmatter with its English triggers
+# folded in ("… Triggers: a, b, c."), so native skill discovery matches the
+# same phrases as the routing tables. Falls back to a generic sentence when
+# the command declares no description.
+compose_skill_description() {
+  local file="$1"
+  local name desc triggers
+  name="$(basename "$file" .md)"
+  desc="$(parse_frontmatter "$file" description)"
+  triggers="$(parse_frontmatter "$file" triggers_en)"
+  [[ -z "$desc" ]] && desc="Run the $name command of the obsidian-second-brain skill."
+
+  if [[ -n "$triggers" ]]; then
+    local trig_clean
+    trig_clean="$(echo "$triggers" | tr -d '[]"' | sed 's/,/, /g; s/  */ /g; s/^ *//; s/ *$//')"
+    [[ -n "$trig_clean" ]] && desc="$desc Triggers: $trig_clean."
+  fi
+  echo "$desc"
+}
+
 # ── Routing table emission (grouped by category) ────────────────────────────
 
 # Display order + human-readable section titles for known categories.
