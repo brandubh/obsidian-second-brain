@@ -69,7 +69,7 @@ enumerate_commands() {
 
 # compose_skill_description <file>
 # Echoes the command's `description` frontmatter with its English triggers
-# folded in ("… Triggers: a, b, c."), so native skill discovery matches the
+# folded in ("... Triggers: a, b, c."), so native skill discovery matches the
 # same phrases as the routing tables. Falls back to a generic sentence when
 # the command declares no description.
 compose_skill_description() {
@@ -104,7 +104,7 @@ _category_title() {
   esac
 }
 
-# emit_routing_table_grouped <commands_dir> <platform> <command_path_prefix>
+# emit_routing_table_grouped <commands_dir> <platform> <command_path_prefix> [path_suffix]
 # Prints a Markdown routing table grouped by category. One section per
 # category in CATEGORY_ORDER order (skipping empty ones), then any unknown
 # categories alphabetically.
@@ -114,8 +114,10 @@ _category_title() {
 #   platform             - platform name (passed to should_include)
 #   command_path_prefix  - the path prefix used in the "Read this file" column
 #                          (e.g. ".codex/commands" or ".gemini/commands")
+#   path_suffix          - appended after the command name; default ".md".
+#                          Use "/SKILL.md" for skill-directory layouts.
 emit_routing_table_grouped() {
-  local src_dir="$1" platform="$2" path_prefix="$3"
+  local src_dir="$1" platform="$2" path_prefix="$3" path_suffix="${4:-.md}"
   [[ -d "$src_dir" ]] || return 0
 
   local tmp_index; tmp_index="$(mktemp)"
@@ -139,7 +141,7 @@ emit_routing_table_grouped() {
   local c
   for c in $CATEGORY_ORDER; do
     if echo "$all_cats" | grep -qx "$c"; then
-      _emit_one_category_section "$c" "$tmp_index" "$path_prefix"
+      _emit_one_category_section "$c" "$tmp_index" "$path_prefix" "$path_suffix"
       emitted+=" $c"
     fi
   done
@@ -147,14 +149,14 @@ emit_routing_table_grouped() {
   # Then any unknown categories alphabetically
   for c in $all_cats; do
     case " $emitted " in *" $c "*) continue ;; esac
-    _emit_one_category_section "$c" "$tmp_index" "$path_prefix"
+    _emit_one_category_section "$c" "$tmp_index" "$path_prefix" "$path_suffix"
   done
 
   rm -f "$tmp_index"
 }
 
 _emit_one_category_section() {
-  local cat="$1" index_file="$2" path_prefix="$3"
+  local cat="$1" index_file="$2" path_prefix="$3" path_suffix="${4:-.md}"
   local title; title="$(_category_title "$cat")"
   printf '\n### %s\n\n' "$title"
   printf '| Command | What it does | Read this file |\n'
@@ -163,7 +165,7 @@ _emit_one_category_section() {
   awk -F '\t' -v c="$cat" '$1 == c { print $2 "\t" $3 }' "$index_file" \
     | sort \
     | while IFS=$'\t' read -r name desc; do
-        printf '| `/%s` | %s | `%s/%s.md` |\n' "$name" "$desc" "$path_prefix" "$name"
+        printf '| `/%s` | %s | `%s/%s%s` |\n' "$name" "$desc" "$path_prefix" "$name" "$path_suffix"
       done
 }
 

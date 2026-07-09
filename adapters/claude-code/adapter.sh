@@ -122,7 +122,7 @@ Restart Claude Code / Cowork. Every command is now a skill: `/obsidian-daily`,
 name and description.
 
 Do NOT also symlink `dist/claude-code/commands/*.md` into `~/.claude/commands/`
-— a command file and a skill with the same name both create `/name`, producing
+- a command file and a skill with the same name both create `/name`, producing
 duplicates. The `commands/` tree exists only for legacy installs; if you have
 old symlinks there, remove them:
 

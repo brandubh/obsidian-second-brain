@@ -49,6 +49,33 @@ def test_codex_cli_build_generates_expected_files():
     assert "description:" in head
 
 
+def test_codex_cli_agents_md_is_multi_agent():
+    """The emitted AGENTS.md is the vault's single operating manual for EVERY
+    agent (Codex, Claude Code, Claude Cowork, Copilot, Gemini, ...), not a
+    Codex-only document. It must carry per-agent invocation guidance plus
+    routing tables + trigger phrases for agents without native skill
+    discovery, so rebuilds stop regressing the hand-maintained vault copy."""
+    result = subprocess.run(
+        ["bash", "scripts/build.sh", "--platform", "codex-cli"],
+        cwd=REPO_ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    manual = (REPO_ROOT / "dist/codex-cli/AGENTS.md").read_text(encoding="utf-8")
+    assert "Codex CLI Operating Manual" not in manual
+    for agent in ("Codex", "Claude Code", "Cowork", "GitHub Copilot", "Gemini"):
+        assert agent in manual, agent
+    # Routing table rows point at the in-vault skill files.
+    assert "`.agents/skills/obsidian-save/SKILL.md`" in manual
+    assert "Trigger phrases" in manual
+    # The Claude pointer file must name both Claude surfaces.
+    pointer = (REPO_ROOT / "dist/codex-cli/CLAUDE.md").read_text(encoding="utf-8")
+    assert "Cowork" in pointer
+
+
 def test_claude_code_build_generates_per_command_skills():
     """The claude-code adapter must emit one Agent Skill per command under
     skills/<name>/SKILL.md so both Claude Code and Claude Cowork discover them

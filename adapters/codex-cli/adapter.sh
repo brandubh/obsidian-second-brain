@@ -42,9 +42,9 @@ _codex_emit_pointer_files() {
   cat > "$dst/CLAUDE.md" <<'EOF'
 @AGENTS.md
 
-# Claude Code
+# Claude Code / Claude Cowork
 
-All project instructions live in **AGENTS.md** at the repository root, imported above and treated as the single source of truth. Read it and follow every rule there, including the memory protocol.
+All project instructions live in **AGENTS.md** at the repository root, imported above and treated as the single source of truth. This applies to every Claude surface working in this vault - Claude Code and Claude Cowork alike. Read it and follow every rule there, including the memory protocol.
 
 Do not duplicate or restate instructions in this file. If a rule needs to change, change it in `AGENTS.md`.
 EOF
@@ -56,7 +56,7 @@ The single source of truth for this project is **AGENTS.md** at the repository r
 
 Read `AGENTS.md` and follow all instructions there, including the memory protocol: read the `memory/` directory at the start of work and keep it updated as the project progresses.
 
-This file is a pointer only. It intentionally contains no rules of its own — `AGENTS.md` governs. If a rule needs to change, change it in `AGENTS.md`.
+This file is a pointer only. It intentionally contains no rules of its own - `AGENTS.md` governs. If a rule needs to change, change it in `AGENTS.md`.
 EOF
 
   mkdir -p "$dst/.github"
@@ -71,9 +71,11 @@ This file is a pointer only. It intentionally contains no rules of its own; `AGE
 EOF
 }
 
-# Emit AGENTS.md at the dist root. Thin always-on manual - no routing table,
-# because Codex's native skill discovery (progressive disclosure) handles
-# routing. We just tell the agent the skills exist and the AI-first rule.
+# Emit AGENTS.md at the dist root: the single operating manual EVERY agent
+# reads (the pointer files route them here). Agent-neutral by design - it
+# explains per-agent invocation, then carries routing tables + trigger
+# phrases for agents without native skill discovery (Copilot, Gemini, or a
+# Claude session without the skills installed).
 _codex_emit_dispatcher() {
   local src="$1" dst="$2"
   local out="$dst/$CODEX_DISPATCHER"
@@ -85,20 +87,37 @@ _codex_emit_dispatcher() {
 
   {
     cat <<EOF
-# Obsidian Second Brain - Codex CLI Operating Manual
+# Obsidian Second Brain - Agent Operating Manual
 
-This vault runs the **obsidian-second-brain** skill as ${count} native Codex
-**Agent Skills** under \`.agents/skills/\`. Codex discovers them automatically:
-each skill's name and description are always visible, and the full instructions
-load only when a skill is selected (progressive disclosure).
+This vault runs the **obsidian-second-brain** skill as ${count} portable
+**Agent Skills** under \`.agents/skills/<name>/SKILL.md\`. That directory is
+the canonical, agent-neutral copy: any agent can read a skill file and follow
+it. This manual is the single source of truth for every agent working in this
+vault - Codex CLI, Claude Code, Claude Cowork, GitHub Copilot, Gemini CLI, and
+anything else; the pointer files (\`CLAUDE.md\`, \`GEMINI.md\`,
+\`.github/copilot-instructions.md\`) all route here.
+
+## How to invoke skills, per agent
+
+- **Codex CLI** discovers \`.agents/skills/\` natively (progressive
+  disclosure). Invoke with \`\$<skill-name>\`, pick from \`/skills\`, or let
+  implicit selection match the description. No routing table needed.
+- **Claude Code / Claude Cowork**: if the skills are installed user-side
+  (\`~/.claude/skills/\`, from the claude-code build), invoke them as
+  \`/<name>\` or let Claude select them. Otherwise use the routing tables
+  below and read the matching \`.agents/skills/<name>/SKILL.md\`.
+- **GitHub Copilot** has no native skill discovery: use the routing tables
+  and trigger phrases below, then read and follow the matching skill file
+  step by step.
+- **Gemini CLI and any other agent**: same as Copilot - route via the tables
+  below.
 
 ## How to operate
 
 1. Read \`_CLAUDE.md\` in the vault root, if it exists, to learn the user's
    vault conventions (folder map, daily note format, naming).
-2. When the user's request matches a skill, invoke it - by \`\$<skill-name>\`,
-   via \`/skills\`, or let Codex select it implicitly from its description.
-   You do not need a routing table here; the skill list is the router.
+2. When the user's request matches a skill, invoke it via your client's best
+   mechanism (see per-agent list above).
 3. Treat the AI-first vault rule (\`.codex/references/ai-first-rules.md\`) as
    non-negotiable for every note you write: \`## For future Claude\` preamble,
    rich frontmatter (\`type\`, \`date\`, \`tags\`, \`ai-first: true\`),
@@ -106,6 +125,16 @@ load only when a skill is selected (progressive disclosure).
    external claim, sources verbatim, confidence levels where applicable.
 4. Do not invent skills. If none matches, ask the user or fall back to plain
    natural-language help.
+
+## Command routing tables for agents without native skill discovery
+
+When the user request matches a command below, read the linked skill file and
+follow it step by step. Agents with native discovery (Codex, Claude with the
+skills installed) can ignore these tables - the skill list is the router.
+EOF
+    emit_routing_table_grouped "$src/commands" "$CODEX_PLATFORM" ".agents/skills" "/SKILL.md"
+    emit_trigger_reference "$src/commands" "$CODEX_PLATFORM"
+    cat <<EOF
 
 ## Scripts
 
@@ -115,7 +144,10 @@ reference the exact invocation inside the skill body.
 
 ---
 
-*Generated by adapters/codex-cli/adapter.sh - do not edit manually.*
+*Generated by adapters/codex-cli/adapter.sh - do not edit the generated
+sections manually. Vault-local sections added below/around them (e.g. project
+init rules, memory protocol, path resolution, extra skill repos) must be
+preserved and re-applied when this file is regenerated.*
 EOF
   } > "$out"
 }
