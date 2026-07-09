@@ -1,0 +1,33 @@
+# _system/path-map.yaml - OS-aware logical roots for the AI Brain vault.
+#
+# Rendered from templates/path-map.template.yaml (obsidian-second-brain repo)
+# by the workspace seed scripts (seed-macos.sh / seed-windows.ps1), which
+# substitute the {{...}} placeholders and write this file into the vault at
+# _system/path-map.yaml ONLY when it does not exist yet.
+#
+# Agents resolve project locations as: detect OS -> pick the matching roots
+# block -> expand ~ / %VARS% -> join root + relative-path from the project
+# note frontmatter (local-path-key + relative-path). Never hard-code absolute
+# paths in project notes.
+#
+# If your roots move, edit the rendered copy in the vault by hand; the seed
+# scripts never overwrite an existing path-map.yaml.
+
+roots:
+  macos:
+    brain_root: "{{MACOS_WORK_ROOT}}/ai-brain"
+    code_root: "{{MACOS_WORK_ROOT}}/code"
+    skills_root: "{{MACOS_WORK_ROOT}}/ai-skills"
+    second_brain_tooling: "{{MACOS_WORK_ROOT}}/obsidian-second-brain"
+    onedrive_knowledge: "{{MACOS_ONEDRIVE_ROOT}}/projects"
+    onedrive_wip: "{{MACOS_ONEDRIVE_ROOT}}/_wip"
+    published_root: "{{MACOS_ONEDRIVE_ROOT}}/projects/_published"
+
+  windows:
+    brain_root: "{{WINDOWS_WORK_ROOT}}/ai-brain"
+    code_root: "{{WINDOWS_WORK_ROOT}}/code"
+    skills_root: "{{WINDOWS_WORK_ROOT}}/ai-skills"
+    second_brain_tooling: "{{WINDOWS_WORK_ROOT}}/obsidian-second-brain"
+    onedrive_knowledge: "{{WINDOWS_ONEDRIVE_ROOT}}/projects"
+    onedrive_wip: "{{WINDOWS_ONEDRIVE_ROOT}}/_wip"
+    published_root: "{{WINDOWS_ONEDRIVE_ROOT}}/projects/_published"
