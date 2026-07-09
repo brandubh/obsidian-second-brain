@@ -49,6 +49,35 @@ def test_codex_cli_build_generates_expected_files():
     assert "description:" in head
 
 
+def test_claude_code_build_generates_per_command_skills():
+    """The claude-code adapter must emit one Agent Skill per command under
+    skills/<name>/SKILL.md so both Claude Code and Claude Cowork discover them
+    (Cowork reads ~/.claude/skills/ but not ~/.claude/commands/), while keeping
+    the legacy commands/ tree and the umbrella SKILL.md."""
+    result = subprocess.run(
+        ["bash", "scripts/build.sh", "--platform", "claude-code"],
+        cwd=REPO_ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    skill = REPO_ROOT / "dist/claude-code/skills/obsidian-daily/SKILL.md"
+    assert skill.is_file()
+    head = skill.read_text(encoding="utf-8")[:600]
+    assert "name: obsidian-daily" in head
+    assert "description:" in head
+    # English triggers must be folded into the description for discovery.
+    assert "Triggers:" in head
+    # Claude is the native dialect: tool names must NOT be neutralized.
+    body = skill.read_text(encoding="utf-8")
+    assert "mcp__claude_ai_Google_Calendar__list_events" in body
+    # Legacy surfaces still ship.
+    assert (REPO_ROOT / "dist/claude-code/SKILL.md").is_file()
+    assert (REPO_ROOT / "dist/claude-code/commands/obsidian-daily.md").is_file()
+
+
 def test_hermes_build_generates_native_skills():
     """The hermes adapter must emit one native Hermes skill per command at
     skills/<category>/<name>/SKILL.md, with the required frontmatter Hermes
