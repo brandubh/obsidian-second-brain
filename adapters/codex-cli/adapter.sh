@@ -114,10 +114,16 @@ manual, \`AGENTS.local.md\` wins.
 - **Codex CLI** discovers \`.agents/skills/\` natively (progressive
   disclosure). Invoke with \`\$<skill-name>\`, pick from \`/skills\`, or let
   implicit selection match the description. No routing table needed.
-- **Claude Code / Claude Cowork**: if the skills are installed user-side
-  (\`~/.claude/skills/\`, from the claude-code build), invoke them as
-  \`/<name>\` or let Claude select them. Otherwise use the routing tables
-  below and read the matching \`.agents/skills/<name>/SKILL.md\`.
+- **Claude Code**: if the skills are installed user-side (\`~/.claude/skills/\`,
+  from the claude-code build), invoke them as \`/<name>\` or let Claude select
+  them. Otherwise use the routing tables below and read the matching
+  \`.agents/skills/<name>/SKILL.md\`.
+- **Claude Cowork** does NOT read \`~/.claude/skills/\`: its sessions are
+  sandboxed and only see account-level skills plus folders granted to the
+  session. The vault folder must be added to the session's resources; then
+  route every skill via the tables below. Skills that shell out (the research
+  toolkit's \`uv run ...\` scripts) need a shell and are unavailable in Cowork -
+  say so instead of attempting them.
 - **GitHub Copilot** has no native skill discovery: use the routing tables
   and trigger phrases below, then read and follow the matching skill file
   step by step.
