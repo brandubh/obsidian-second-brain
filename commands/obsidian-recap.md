@@ -8,7 +8,7 @@ Use the obsidian-second-brain skill. Execute `/obsidian-recap $ARGUMENTS`:
 
 The argument is the period: `today`, `week`, or `month`. Default to `week` if not specified.
 
-1. Read `_CLAUDE.md` first if it exists in the vault root
+1. Read `AGENTS.local.md` first if it exists in the vault root
 2. Determine the date range from the argument
 3. List all daily notes in the range with `list_files_in_dir("Daily/")`
 4. Spawn parallel subagents - one per daily note - to read and extract key points from each simultaneously

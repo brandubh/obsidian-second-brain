@@ -8,7 +8,7 @@ Use the obsidian-second-brain skill. Execute `/obsidian-project $ARGUMENTS`:
 
 The argument is a project name. Handle typos and partial matches.
 
-1. Read `_CLAUDE.md` first if it exists in the vault root
+1. Read `AGENTS.local.md` first if it exists in the vault root
 2. Search the vault for an existing project matching the name (fuzzy - handle typos)
 3. If found: show what was found, confirm with user, then update with new info from conversation
 4. If not found: create `Projects/Project Name.md` with full frontmatter schema (`date`, `tags: [project]`, `status: active`, `job`)

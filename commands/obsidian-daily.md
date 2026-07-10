@@ -6,7 +6,7 @@ triggers_en: ["todays note", "create todays daily", "open daily", "today daily n
 
 Use the obsidian-second-brain skill. Execute `/obsidian-daily`:
 
-1. Read `_CLAUDE.md` first if it exists in the vault root
+1. Read `AGENTS.local.md` first if it exists in the vault root
 2. Read `CRITICAL_FACTS.md` for timezone
 
 3. Check if `wiki/daily/YYYY-MM-DD.md` exists for today

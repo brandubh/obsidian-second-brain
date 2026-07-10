@@ -10,7 +10,7 @@ Optional argument: a specific project name. If given, show deep context for that
 
 ## Step 1 - discover projects
 
-Read `_CLAUDE.md` to find the projects folder name, resolved per `references/folder-map.md` (wiki-style `wiki/projects/`, Obsidian-style `Projects/`). If not defined, default to the wiki-style `wiki/projects/`.
+Read `AGENTS.local.md` to find the projects folder name, resolved per `references/folder-map.md` (wiki-style `wiki/projects/`, Obsidian-style `Projects/`). If not defined, default to the wiki-style `wiki/projects/`.
 
 Scan that folder for all `.md` files. For each file, read its frontmatter. A note is a tracked project if it has `type: project` OR lives in the projects folder and has a `repo:` field. Collect:
 

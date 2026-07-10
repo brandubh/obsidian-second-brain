@@ -9,7 +9,7 @@ Use the obsidian-second-brain skill. Execute `/vault-deep-synthesis [topic]`:
 A focused, topic-driven cross-reference of the existing vault. Unlike `/obsidian-synthesize` (which scans the whole vault for unnamed patterns unprompted), this takes a topic you name and reads every note touching it to produce one consolidated view. Pure vault: no network, no API keys.
 
 1. Resolve the topic from the argument. If none, ask what to synthesize.
-2. Find every note that references the topic - grep and list exhaustively across whatever top-level note folders the vault actually has (read the vault root once; typically `wiki/`, `Research/`, and any project/concept folders named in `_CLAUDE.md` per `references/folder-map.md` - do not assume a fixed list, do not sample; see the anti-fabrication rule). Match by every plausible name, alias, and folder.
+2. Find every note that references the topic - grep and list exhaustively across whatever top-level note folders the vault actually has (read the vault root once; typically `wiki/`, `Research/`, and any project/concept folders named in `AGENTS.local.md` per `references/folder-map.md` - do not assume a fixed list, do not sample; see the anti-fabrication rule). Match by every plausible name, alias, and folder.
 3. Read the matching notes and cross-reference them into:
    - **What the vault agrees on** - claims multiple notes corroborate, with `[[wikilinks]]` to each.
    - **Contradictions** - where notes disagree; name both `[[notes]]` and the specific conflict. Do not resolve them here (that is `/obsidian-reconcile`); just surface them.

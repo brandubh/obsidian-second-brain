@@ -6,7 +6,7 @@ triggers_en: ["load context", "what is going on", "where am I", "load my world"]
 
 Use the obsidian-second-brain skill. Execute `/obsidian-world`:
 
-1. Read `_CLAUDE.md` first if it exists in the vault root
+1. Read `AGENTS.local.md` first if it exists in the vault root
 
 2. Load context progressively - start light, go deeper only as needed:
 

@@ -8,9 +8,9 @@ Use the obsidian-second-brain skill. Execute `/obsidian-capture $ARGUMENTS`:
 
 The optional argument is the idea text. If not provided, pull the most recent idea or thought from the conversation.
 
-1. Read `_CLAUDE.md` first if it exists in the vault root
+1. Read `AGENTS.local.md` first if it exists in the vault root
 2. Take the argument as the idea, or pull from recent conversation context
-3. Resolve the idea folder per `references/folder-map.md` (read the vault's `_CLAUDE.md` Folder Map first; wiki-style ideas live in `wiki/concepts/`, Obsidian-style in `Ideas/`). Search it for a related existing note - if found, append to it
+3. Resolve the idea folder per `references/folder-map.md` (read the vault's `AGENTS.local.md` Folder Map first; wiki-style ideas live in `wiki/concepts/`, Obsidian-style in `Ideas/`). Search it for a related existing note - if found, append to it
 4. If new: create `<idea-folder>/Title.md` with minimal frontmatter (`date`, `tags: [idea]`)
 5. Write the idea with any supporting context from the conversation
 6. Add a brief mention in today's daily note under an Ideas or Captures section

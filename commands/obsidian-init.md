@@ -1,5 +1,5 @@
 ---
-description: Scan your vault and generate a _CLAUDE.md operating manual, index.md catalog, and log.md pointer
+description: Scan your vault and generate the AGENTS.local.md vault operating manual (agent-neutral, read by every AI agent via AGENTS.md), index.md catalog, and log.md pointer
 category: meta
 triggers_en: ["init vault", "bootstrap vault", "setup vault", "scan vault"]
 ---
@@ -13,7 +13,7 @@ Use the obsidian-second-brain skill. Execute `/obsidian-init`:
    - **Boards agent**: read all files in `Boards/`
    - **Samples agent**: read one existing note per major folder to capture naming conventions and frontmatter patterns
 3. Merge all agent results into a complete picture of the vault
-4. Generate a complete `_CLAUDE.md` using the template in `references/claude-md-template.md`, filled with real values from the vault
+4. Generate a complete `AGENTS.local.md` using the template in `references/claude-md-template.md`, filled with real values from the vault. `AGENTS.local.md` is the vault-local manual every agent reads via `AGENTS.md`; it belongs to the vault owner and is never touched by tooling rebuilds. **If it already exists, merge: update only the generated vault-convention sections (folder map, naming, formats) and preserve every owner-written section (custom instructions, protocols, skill routing) verbatim.**
 5. Generate `index.md` at the vault root - a catalog of all pages organized by category:
    - List every note in the vault grouped by folder (Projects, People, Ideas, etc.)
    - Include a one-line description for each note (from frontmatter or first paragraph)
@@ -22,7 +22,7 @@ Use the obsidian-second-brain skill. Execute `/obsidian-init`:
 6. Initialize the vault operations log:
    - Create `Logs/` directory at the vault root
    - Write `log.md` at the vault root as a thin pointer file: explains the per-day structure, points at `Logs/`, and ships the entry template (do NOT put log entries in `log.md` itself)
-   - Write today's `Logs/YYYY-MM-DD.md` with the init entry: `**HH:MM** - init | Vault initialized with _CLAUDE.md, index.md, Logs/`
+   - Write today's `Logs/YYYY-MM-DD.md` with the init entry: `**HH:MM** - init | Vault initialized with AGENTS.local.md, index.md, Logs/`
    - Per-day file format: frontmatter (`type: log`, `date`, `ai-first: true`) + `**HH:MM** - action | description` entries, append-only
 7. Create `Bases/` at the vault root if it does not exist. Stamp the four premade base files from `references/bases/`:
 
@@ -37,10 +37,10 @@ Use the obsidian-second-brain skill. Execute `/obsidian-init`:
 
    Skip any base file that already exists in `Bases/` - never overwrite.
 
-8. Write `_CLAUDE.md`, `index.md`, root `log.md` (pointer), `Logs/YYYY-MM-DD.md` (today's entries), and any new `Bases/*.base` files
+8. Write `AGENTS.local.md`, `index.md`, root `log.md` (pointer), `Logs/YYYY-MM-DD.md` (today's entries), and any new `Bases/*.base` files
 9. Confirm what was written and tell the user to restart their Claude session so the new files take effect
 
-If `_CLAUDE.md` already exists: show a diff of what would change and ask before overwriting.
+If `AGENTS.local.md` already exists: merge per step 4 (never drop owner-written sections), show a diff of what would change, and ask before writing.
 If `index.md` already exists: regenerate it (it's always a fresh catalog of current vault state).
 If a monolithic `log.md` already exists with `## YYYY-MM-DD` sections: run `python scripts/migrate_log.py --vault <vault-path>` to split it into `Logs/YYYY-MM-DD.md` files. Do not overwrite manually.
 

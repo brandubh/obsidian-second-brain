@@ -8,7 +8,7 @@ Use the obsidian-second-brain skill. Execute `/obsidian-learn $ARGUMENTS`:
 
 The optional argument is a scope: `recent` (last 30 days, default), `all` (entire vault), or a topic name.
 
-1. Read `_CLAUDE.md` first if it exists in the vault root
+1. Read `AGENTS.local.md` first if it exists in the vault root
 2. Read `index.md` and recent operation log for vault context (if `Logs/` exists: read the last 2-3 `Logs/YYYY-MM-DD.md` files; otherwise read `log.md`)
 
 3. Spawn parallel subagents to gather learnings:
@@ -23,7 +23,7 @@ The optional argument is a scope: `recent` (last 30 days, default), `all` (entir
    - **Active**: still relevant, recurring, reinforced by recent activity
    - **Stale**: 6+ months old with no recent reinforcement, or contradicted by newer evidence
    - **Superseded**: explicitly replaced by a newer ADR or pattern
-   - **Promoted**: appeared 3+ times - should become a permanent rule in `_CLAUDE.md`
+   - **Promoted**: appeared 3+ times - should become a permanent rule in `AGENTS.local.md`
 
 5. Generate the Learnings Report:
 
@@ -39,7 +39,7 @@ The optional argument is a scope: `recent` (last 30 days, default), `all` (entir
    - Old position → New position with ADR reference
 
    ## Promotion Candidates (appeared 3+ times)
-   - Learnings strong enough to become permanent rules in `_CLAUDE.md`
+   - Learnings strong enough to become permanent rules in `AGENTS.local.md`
    - Suggest exact wording for the operating manual
 
    ## Top 5 Lessons of the Period
@@ -49,7 +49,7 @@ The optional argument is a scope: `recent` (last 30 days, default), `all` (entir
 7. Append to the operation log: if `Logs/` exists write `**HH:MM** - learn | X active, Y stale, Z superseded, N promotion candidates` to `Logs/YYYY-MM-DD.md`; otherwise append `## [YYYY-MM-DD] learn | X active, Y stale, Z superseded, N promotion candidates` to `log.md`
 8. Update today's daily note with a brief summary
 9. Offer to:
-   - Promote candidates to `_CLAUDE.md` (with user confirmation)
+   - Promote candidates to `AGENTS.local.md` (with user confirmation)
    - Archive stale learnings (with user confirmation)
    - Export top 5 as a shareable markdown for content/journaling
 

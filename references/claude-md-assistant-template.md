@@ -1,4 +1,4 @@
-# `_CLAUDE.md` Template - Assistant Mode
+# `AGENTS.local.md` Template - Assistant Mode
 
 Use this template when the vault operator is maintaining a vault FOR someone else (e.g., an executive assistant managing their boss's knowledge base, a consultant tracking a client's decisions).
 
@@ -55,7 +55,7 @@ This vault is operated on behalf of someone else. Key differences from personal 
 
 ---
 
-[Rest of standard _CLAUDE.md sections: folder map, auto-save rules, naming conventions, etc.]
+[Rest of standard AGENTS.local.md sections: folder map, auto-save rules, naming conventions, etc.]
 ```
 
 ---

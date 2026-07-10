@@ -6,7 +6,7 @@ Optimized for vaults where Claude does most or all of the writing. The primary r
 
 ```
 Your Vault/
-├── _CLAUDE.md                  ← Claude's operating manual
+├── AGENTS.local.md                  ← Claude's operating manual
 ├── index.md                    ← Catalog of all pages (Claude reads this FIRST)
 ├── log.md                      ← Chronological log of every vault operation
 ├── SOUL.md                     ← Identity, values, communication style
@@ -47,7 +47,7 @@ For users who browse their vault daily in Obsidian. Folders are organized for hu
 
 ```
 Your Vault/
-├── _CLAUDE.md
+├── AGENTS.local.md
 ├── index.md
 ├── log.md
 ├── Home.md                     ← Dashboard with dataview queries

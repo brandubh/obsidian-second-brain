@@ -34,7 +34,7 @@ agent) should follow when the user's request matches its trigger phrase.
 
 ## How to operate
 
-1. Read `_CLAUDE.md` in the vault root, if it exists, to learn the user's
+1. Read `AGENTS.local.md` in the vault root, if it exists, to learn the user's
    vault conventions.
 2. When the user's request matches a trigger in the tables below, read the
    matching file under `.opencode/commands/<name>.md` and follow its

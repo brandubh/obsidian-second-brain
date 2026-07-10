@@ -6,9 +6,9 @@ triggers_en: ["vault health", "check vault", "audit vault", "vault diagnostics"]
 
 Use the obsidian-second-brain skill. Execute `/obsidian-health`:
 
-1. Read `_CLAUDE.md` first to find the vault path
+1. Read `AGENTS.local.md` first to find the vault path
 2. Run: `python scripts/vault_health.py --path ~/path/to/vault --json`
-   (replace vault path with the one from `_CLAUDE.md`)
+   (replace vault path with the one from `AGENTS.local.md`)
 3. Parse the JSON output and split findings into categories
 4. Spawn parallel subagents to handle each category simultaneously:
    - **Wanted-notes agent**: the script reports `wanted_note` items - links to a note that does not exist yet. These are NOT errors: in a wiki-style vault you link a thing the moment you mention it, so wanted notes are a demand-ranked wishlist of pages worth writing, not breakage. Triage them with `python scripts/triage_links.py --path <vault> --limit N`, which sorts each into keep (a deliberate seed, leave it), create (referenced enough to deserve a real note now), or delete (junk or a typo - fix the link). Report-only by default; needs `ANTHROPIC_API_KEY`. Headless on purpose: it can run unattended or on a schedule. The goal is to triage the backlog, never to drive the count to zero.

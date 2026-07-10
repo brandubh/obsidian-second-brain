@@ -8,7 +8,7 @@ Use the obsidian-second-brain skill. Execute `/obsidian-visualize $ARGUMENTS`:
 
 The optional argument is a scope: a project name, entity name, topic, or "full" for the entire vault. Default: full vault.
 
-1. Read `_CLAUDE.md` first if it exists in the vault root
+1. Read `AGENTS.local.md` first if it exists in the vault root
 
 2. Build the graph deterministically with the scanner instead of reading every note into context (a full-vault read is O(read-everything) and burns the budget):
    ```bash

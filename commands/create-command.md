@@ -126,7 +126,7 @@ Use the obsidian-second-brain skill. Execute `/<name> $ARGUMENTS`:
 
 <one-sentence framing tying the user's intent (Phase 1) to the action>
 
-1. Read `_CLAUDE.md` first if it exists in the vault root
+1. Read `AGENTS.local.md` first if it exists in the vault root
 2. <step from Phase 5, step 1>
 3. <step from Phase 5, step 2>
 4. <step from Phase 5, step 3>

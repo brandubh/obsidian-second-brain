@@ -126,14 +126,14 @@ _hermes_emit_blueprints() {
 
   _hermes_write_blueprint "$dst" obsidian-morning "0 8 * * *" "daily at 8:00 AM" \
 "Create today's daily note and surface what needs attention. Runs unattended on schedule." \
-"Read \`_CLAUDE.md\`. Create today's daily note in \`Daily/\` using the Daily Note template.
+"Read \`AGENTS.local.md\`. Create today's daily note in \`Daily/\` using the Daily Note template.
 Pull in any tasks from kanban boards that are due today or overdue.
 List any projects with status active that have no recent activity in the last 7 days.
 Do not ask questions - infer everything from the vault. Save and stop."
 
   _hermes_write_blueprint "$dst" obsidian-nightly "0 22 * * *" "daily at 10:00 PM" \
 "Sleeptime consolidation - the vault gets smarter overnight. The cron-native counterpart to the Claude PostCompact maintenance pass." \
-"Read \`_CLAUDE.md\`. This is a sleeptime consolidation pass - the vault should be smarter when the user wakes up.
+"Read \`AGENTS.local.md\`. This is a sleeptime consolidation pass - the vault should be smarter when the user wakes up.
 
 Phase 1 - Close the day:
 - Read today's daily note. Append a ## End of Day section with a 3-5 bullet summary.
@@ -160,7 +160,7 @@ Do not ask questions. Do not fix anything destructive - only add, update, link. 
 
   _hermes_write_blueprint "$dst" obsidian-weekly "0 18 * * 5" "every Friday at 6:00 PM" \
 "Generate a weekly review note from the vault. Runs unattended on schedule." \
-"Read \`_CLAUDE.md\`. Run the obsidian-recap skill for the week to gather this week's activity.
+"Read \`AGENTS.local.md\`. Run the obsidian-recap skill for the week to gather this week's activity.
 Generate a weekly review note using the Review template (or standard structure if none exists).
 Save to \`Reviews/YYYY-MM-DD - Weekly Review.md\`.
 Link it from this week's last daily note.
@@ -168,7 +168,7 @@ Do not ask questions. Save and stop."
 
   _hermes_write_blueprint "$dst" obsidian-health-check "0 21 * * 0" "every Sunday at 9:00 PM" \
 "Run the vault health check and log a report (report only, never auto-fixes)." \
-"Read \`_CLAUDE.md\`. Run: \`uv run -m scripts.vault_health --path <vault> --json\`
+"Read \`AGENTS.local.md\`. Run: \`uv run -m scripts.vault_health --path <vault> --json\`
 Parse the output. Write a health report to \`Knowledge/Vault Health YYYY-MM-DD.md\`
 summarizing findings by severity (critical, warning, info).
 Do not fix anything autonomously - only report.

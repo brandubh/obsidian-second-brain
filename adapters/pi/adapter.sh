@@ -124,7 +124,7 @@ and this discovery skill (`/skill:obsidian-second-brain`).
 
 ## How to operate
 
-1. Read `_CLAUDE.md` in the vault root, if it exists, to learn the user's vault
+1. Read `AGENTS.local.md` in the vault root, if it exists, to learn the user's vault
    conventions.
 2. When the user types a prompt template like `/obsidian-save`, follow its
    instructions step by step.
@@ -134,7 +134,7 @@ and this discovery skill (`/skill:obsidian-second-brain`).
    (`type`, `date`, `tags`, `ai-first: true`), `[[wikilinks]]` for every
    person/project/concept, recency markers per external claim, sources verbatim,
    confidence levels where applicable.
-4. If `_CLAUDE.md` is missing, run `/obsidian-init` to generate it.
+4. If `AGENTS.local.md` is missing, run `/obsidian-init` to generate it.
 
 ## Command routing table
 EOF

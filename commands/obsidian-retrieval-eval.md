@@ -10,7 +10,7 @@ You cannot improve retrieval you have not measured. This scores the vault's REAL
 
 The optional argument is a number of cases to (re)generate first (e.g. `30`), or `report` to also write the result to the vault. No argument: evaluate the existing cases.
 
-1. Read `_CLAUDE.md` first if it exists in the vault root.
+1. Read `AGENTS.local.md` first if it exists in the vault root.
 
 2. If the user asked to generate (or no cases file exists yet at `scripts/eval/retrieval_cases.jsonl`), bootstrap the eval set from the vault:
    ```bash

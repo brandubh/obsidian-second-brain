@@ -10,7 +10,7 @@ The optional argument is a note path, a `[[wikilink]]`, a folder, or a source UR
 
 A distillation is not a summary. A summary throws the source away; a distillation keeps a verifiable trail, so a teammate (or a future Claude) can check every claim against the exact place it came from. This is the trust primitive: condensed but never unmoored from evidence.
 
-1. Read `_CLAUDE.md` first if it exists in the vault root. Resolve the destination folder per `references/folder-map.md` (a distillation is a concept/reference note: wiki-style `wiki/concepts/`, Obsidian-style `Knowledge/`).
+1. Read `AGENTS.local.md` first if it exists in the vault root. Resolve the destination folder per `references/folder-map.md` (a distillation is a concept/reference note: wiki-style `wiki/concepts/`, Obsidian-style `Knowledge/`).
 
 2. Resolve and read the source:
    - A vault note or `[[wikilink]]`: read it in full.

@@ -8,7 +8,7 @@ Use the obsidian-second-brain skill. Execute `/obsidian-export $ARGUMENTS`:
 
 The optional argument is the format: `json` (default), `markdown`, or `okf`.
 
-1. Read `_CLAUDE.md` first if it exists in the vault root
+1. Read `AGENTS.local.md` first if it exists in the vault root
 2. Read `index.md` for the full vault catalog
 
 3. Build a structured export by scanning the vault:
@@ -53,7 +53,7 @@ The optional argument is the format: `json` (default), `markdown`, or `okf`.
 
    **OKF** (Open Knowledge Format - Google Cloud's vendor-neutral "folders of markdown" standard): do NOT build this by hand. Run the deterministic exporter:
    ```bash
-   uv run scripts/export_okf.py --path "<vault path from _CLAUDE.md>"
+   uv run scripts/export_okf.py --path "<vault path from AGENTS.local.md>"
    ```
    It writes an OKF v0.1 bundle to `_export/okf/`: every note becomes an OKF concept doc (frontmatter `type` [required] / `title` / `description` / `resource` [only when the note has a real source URL] / `tags` / ISO-8601 `timestamp`; `[[wikilinks]]` converted to relative-path markdown links), plus a generated `index.md` (progressive disclosure) and a copied `log.md`. The vault's richer AI-first body (incl. the `## For future Claude` preamble) is preserved - OKF is minimally opinionated, so the extra content rides along. This makes the vault "OKF v0.1 compatible" without changing how it works natively.
 
